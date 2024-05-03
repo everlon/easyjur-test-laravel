@@ -15,10 +15,10 @@ switch ($request):
         break;
 
     // LOGIN
-    case "/login":
+    case "/login": //GET
         require __DIR__ . "/controllers/home.php";
         break;
-    case "/auth":
+    case "/auth": // POST
         require __DIR__ . "/controllers/auth.php";
         break;
     case "/logout":

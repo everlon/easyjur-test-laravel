@@ -24,11 +24,11 @@ class AgendaController extends Controller
         // $agenda = Agenda::where("user_id", auth()->user()->id)->paginate(20);
 
         if (auth()->user()->can("visualizar")) {
-            $agenda = Agenda::paginate(20);
+            $agenda = Agenda::orderBy("created_at", "desc")->paginate(20);
         } else {
-            $agenda = Agenda::where("user_id", auth()->user()->id)->paginate(
-                20
-            );
+            $agenda = Agenda::where("user_id", auth()->user()->id)
+                ->orderBy("created_at", "desc")
+                ->paginate(20);
         }
 
         return view("layouts.agenda.index")->with("agendas", $agenda);
