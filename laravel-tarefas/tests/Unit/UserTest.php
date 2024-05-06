@@ -35,19 +35,36 @@ class UserTest extends TestCase
 
     public function test_CheckIfUserCreateIsWorking()
     {
-        $usuario_teste = [
+        $user = User::factory()->create([
             "name" => "José",
             "telefone" => "(99) 99999-9999",
             "email" => "jose" . rand(1, 99) . "@teste.com.br",
             "password" => Hash::make("1234567890"),
-        ];
-
-        $user = User::factory()->create($usuario_teste);
+        ]);
 
         $response = $this->actingAs($user)->post("/register");
 
         $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
 
         $this->assertNotNull($user->refresh()->email_verified_at);
+    }
+
+    public function test_CheckLoginWithCredentials()
+    {
+        $user = User::factory()->create([
+            "name" => "José",
+            "telefone" => "(99) 99999-9999",
+            "email" => "jose" . rand(1, 99) . "@teste.com.br",
+            "password" => Hash::make("1234567890"),
+        ]);
+
+        $response = $this->post("/login", [
+            "email" => $user->email,
+            "password" => "1234567890",
+        ]);
+
+        $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
+
+        $this->assertAuthenticatedAs($user);
     }
 }
