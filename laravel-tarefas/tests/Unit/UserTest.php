@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 // use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Agenda;
 
 class UserTest extends TestCase
 {
@@ -72,14 +73,10 @@ class UserTest extends TestCase
     {
         $this->test_CheckLoginWithCredentials();
 
-        $response = $this->post("/agenda", [
-            // Este campo "user_id" só irá inserir se a linha:
-            // $input["user_id"] = auth()->user()->id;
-            // Não estiver no AgendaController.
-            "user_id" => 53,
-            "nome" => "Teste de Tarefa",
-            "descricao" => "Teste de Tarefa. Teste de Tarefa.",
-        ]);
+        // Criando uma tarefa com valores aleatórios.
+        $nova_tarefa = Agenda::factory()->create();
+
+        $response = $this->post("/agenda", $nova_tarefa->getAttributes());
 
         $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
 

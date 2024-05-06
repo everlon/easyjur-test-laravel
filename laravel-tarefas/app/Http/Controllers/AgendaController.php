@@ -54,7 +54,7 @@ class AgendaController extends Controller
     {
         $input = $request->all();
         // EAP: Aqui ele irá pegar o ID do usuário logado para incluir na Tarefa.
-        $input["user_id"] = auth()->user()->id;
+        // $input["user_id"] = auth()->user()->id;
 
         Agenda::create($input);
         return redirect("agenda")->with(
