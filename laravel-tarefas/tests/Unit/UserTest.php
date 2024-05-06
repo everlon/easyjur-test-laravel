@@ -10,6 +10,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
+    // Limpar DB depois dos testes.
     // use RefreshDatabase;
 
     /**
@@ -72,7 +73,7 @@ class UserTest extends TestCase
         $this->test_CheckLoginWithCredentials();
 
         $response = $this->post("/agenda", [
-            // Este campos só irá inserir se a linha:
+            // Este campo "user_id" só irá inserir se a linha:
             // $input["user_id"] = auth()->user()->id;
             // Não estiver no AgendaController.
             "user_id" => 53,

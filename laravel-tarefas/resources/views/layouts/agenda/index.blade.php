@@ -90,7 +90,7 @@
                                 <tr id="tarefa-{{ $item->id }}">
                                     <td {{ $item->status == 'Concluído' ? "class=text-success" : "" }}>{{ $loop->iteration }}</td>
                                     @can('visualizar')
-                                    <td {{ $item->status == 'Concluído' ? "class=text-success" : "" }}>{{ $item->user->name }}</td>
+                                    <td {{ $item->status == 'Concluído' ? "class=text-success" : "" }}>{{ Auth::user()->name }}</td>
                                     @endcan
                                     <td {{ $item->status == 'Concluído' ? "class=text-success" : "" }}>{{ $item->nome }}</td>
                                     <td {{ $item->status == 'Concluído' ? "class=text-success" : "" }}>{{ $item->descricao }}</td>
@@ -105,7 +105,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ( $item->user->id == Auth::user()->id )
+                                        @if ( $item->user_id == Auth::user()->id )
                                         <form style="display: inline;">
                                            	@csrf
                                             @method("PATCH")
