@@ -13,12 +13,12 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        // Permission::create(["name" => "administrador"]);
-        // Permission::create(["name" => "visualizar"]);
-        // Permission::create(["name" => "cadastrar"]);
-        // Permission::create(["name" => "editar"]);
-        // Permission::create(["name" => "apagar"]);
-        // Permission::create(["name" => "imprimir"]);
+        Permission::create(["name" => "administrador"]);
+        Permission::create(["name" => "visualizar"]);
+        Permission::create(["name" => "cadastrar"]);
+        Permission::create(["name" => "editar"]);
+        Permission::create(["name" => "apagar"]);
+        Permission::create(["name" => "imprimir"]);
 
         // $user = User::find(2);
         // $user->givePermissionTo([

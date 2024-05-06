@@ -2,11 +2,16 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use App\Models\User;
 
 class UserTest extends TestCase
 {
+    // use RefreshDatabase;
+
     /**
      * A basic unit test example.
      *
@@ -26,5 +31,23 @@ class UserTest extends TestCase
         $arrayCompared = array_diff($expected, $user->getFillable());
 
         $this->assertEquals(0, count($arrayCompared));
+    }
+
+    public function test_CheckIfUserCreateIsWorking()
+    {
+        $usuario_teste = [
+            "name" => "José",
+            "telefone" => "(99) 99999-9999",
+            "email" => "jose" . rand(1, 99) . "@teste.com.br",
+            "password" => Hash::make("1234567890"),
+        ];
+
+        $user = User::factory()->create($usuario_teste);
+
+        $response = $this->actingAs($user)->post("/register");
+
+        $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
+
+        $this->assertNotNull($user->refresh()->email_verified_at);
     }
 }
