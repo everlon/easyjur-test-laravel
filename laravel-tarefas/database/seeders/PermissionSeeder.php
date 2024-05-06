@@ -10,6 +10,7 @@ class PermissionSeeder extends Seeder
 {
     /**
      * EAP: Criando permissões por Spatie.
+     * $ php artisan db:seed --class=PermissionSeeder
      */
     public function run()
     {

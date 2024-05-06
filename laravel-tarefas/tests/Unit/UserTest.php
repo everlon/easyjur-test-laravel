@@ -51,20 +51,40 @@ class UserTest extends TestCase
 
     public function test_CheckLoginWithCredentials()
     {
-        $user = User::factory()->create([
+        $usuario = new User([
             "name" => "José",
             "telefone" => "(99) 99999-9999",
-            "email" => "jose" . rand(1, 99) . "@teste.com.br",
+            "email" => "jose21@teste.com.br",
             "password" => Hash::make("1234567890"),
         ]);
+        $response = $this->actingAs($usuario)->post("/login");
 
-        $response = $this->post("/login", [
-            "email" => $user->email,
-            "password" => "1234567890",
+        $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
+
+        $page = $this->get("/agenda");
+        $page->assertSessionHasNoErrors()->assertSeeText("Lista das Tarefas");
+
+        $this->assertAuthenticatedAs($usuario);
+    }
+
+    public function test_CheckCreateNovaTarefaIsWorking()
+    {
+        $this->test_CheckLoginWithCredentials();
+
+        $response = $this->post("/agenda", [
+            // Este campos só irá inserir se a linha:
+            // $input["user_id"] = auth()->user()->id;
+            // Não estiver no AgendaController.
+            "user_id" => 53,
+            "nome" => "Teste de Tarefa",
+            "descricao" => "Teste de Tarefa. Teste de Tarefa.",
         ]);
 
         $response->assertSessionHasNoErrors()->assertRedirect("/agenda");
 
-        $this->assertAuthenticatedAs($user);
+        $page = $this->get("/agenda");
+        $page
+            ->assertSessionHasNoErrors()
+            ->assertSeeText("Tarefa adicionada com sucesso!");
     }
 }
